@@ -56,13 +56,6 @@ class LeNet5(torch.nn.Module):
         self.bn2 = torch.nn.BatchNorm2d(num_features=16)
         self.pool2 = pooling_layer
         
-        self.fc1 = torch.nn.Linear(256, 120)
-        self.act3 = activation_function
-    
-        self.fc2 = torch.nn.Linear(120, 84)
-        self.act4 = activation_function
-        
-        self.fc3 = torch.nn.Linear(84, 10)
     
     def forward(self, x):
         if self.conv_size == 5:
@@ -82,12 +75,5 @@ class LeNet5(torch.nn.Module):
         if self.use_batch_norm:
             x = self.bn2(x)
         x = self.pool2(x)
-        
-        x = x.view(x.size(0), x.size(1) * x.size(2) * x.size(3))
-        x = self.fc1(x)
-        x = self.act3(x)
-        x = self.fc2(x)
-        x = self.act4(x)
-        x = self.fc3(x)
         
         return x
