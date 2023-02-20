@@ -5,7 +5,8 @@ class LeNet5(torch.nn.Module):
                  activation='tanh',
                  pooling='avg',
                  conv_size=5, 
-                 use_batch_norm=False):
+                 use_batch_norm=False, 
+                 in_channels = 3):
         super(LeNet5, self).__init__()
         
         self.conv_size = conv_size
@@ -27,10 +28,10 @@ class LeNet5(torch.nn.Module):
         
         if conv_size == 5:
             self.conv1 = torch.nn.Conv2d(
-                in_channels=3, out_channels=6, kernel_size=5, padding=0)
+                in_channels=in_channels, out_channels=6, kernel_size=5, padding=0)
         elif conv_size == 3:
             self.conv1_1 = torch.nn.Conv2d(
-                in_channels=3, out_channels=6, kernel_size=3, padding=0)
+                in_channels=in_channels, out_channels=6, kernel_size=3, padding=0)
             self.conv1_2 = torch.nn.Conv2d(
                 in_channels=6, out_channels=6, kernel_size=3, padding=0)
         else:
@@ -55,7 +56,7 @@ class LeNet5(torch.nn.Module):
         self.bn2 = torch.nn.BatchNorm2d(num_features=16)
         self.pool2 = pooling_layer
         
-        self.fc1 = torch.nn.Linear(5 * 5 * 16, 120)
+        self.fc1 = torch.nn.Linear(256, 120)
         self.act3 = activation_function
     
         self.fc2 = torch.nn.Linear(120, 84)

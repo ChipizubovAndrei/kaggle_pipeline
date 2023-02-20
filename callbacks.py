@@ -7,9 +7,7 @@ class SaveBestModel:
     validation loss is less than the previous least less, then save the
     model state.
     """
-    def __init__(
-        self, best_valid_loss=float('inf')
-    ):
+    def __init__(self, best_valid_loss=float('inf')):
         self.best_valid_loss = best_valid_loss
         
     def __call__(
@@ -53,9 +51,10 @@ class EarlyStopping:
         self.delta = delta
         self.path = path
         self.trace_func = trace_func
+        self.save_checkpoint = SaveBestModel()
 
     
-    def __call__(self, val_loss, model):
+    def __call__(self, val_loss, model, epoch, optimizer, criterion):
         score = -val_loss
         if self.best_score is None:
             self.best_score = score
@@ -67,8 +66,9 @@ class EarlyStopping:
                 self.early_stop = True
         else:
             self.best_score = score
-            self.save_checkpoint(val_loss, model)
+            self.save_checkpoint(val_loss, model, epoch, optimizer, criterion)
             self.counter = 0
+
 
 def save_model(epochs, model, optimizer, criterion):
     """
